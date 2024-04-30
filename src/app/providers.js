@@ -6,17 +6,22 @@ import theme from './theme'
 import Footer from '@/components/footer'
 import './globals.css'
 import Header from '@/components/header'
-import { Suspense } from 'react'
-import Loading from './loading'
+import { usePathname } from 'next/navigation'
+import { useEffect } from 'react'
 
 export function Providers({ children }) {
+
+  const pathName = usePathname()
+  useEffect(()=>{
+    console.log(pathName)
+  },[pathName])
+
+  
   return (
     <ChakraProvider theme={theme}>
-      <Suspense fallback={Loading}>
-        <Header />
-        {children}
-        <Footer />
-      </Suspense>
+      <Header />
+      {children}
+      <Footer />
     </ChakraProvider>
   )
 

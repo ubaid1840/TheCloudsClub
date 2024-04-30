@@ -98,7 +98,7 @@ export default function Footer() {
                   color: "gray.600",
                 }}
                 borderRadius={0}
-                borderColor={useColorModeValue("gray.300", "gray.700")}
+                // borderColor={useColorModeValue("gray.300", "gray.700")}
                 id={"newsletter"}
                 type={"email"}
                 placeholder={"Email"}
@@ -117,7 +117,7 @@ export default function Footer() {
 
       <div
         style={{
-          width: "100%",
+          width:'100%',
           borderWidth: "1px",
           borderColor: "white",
           maxWidth: "1300px",

@@ -14,7 +14,8 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
-import { DatePicker } from "@orange_digital/chakra-datepicker";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 function Signup() {
   const [email, setEmail] = useState("");
@@ -155,6 +156,28 @@ function Signup() {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
+
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems:'center'
+              }}
+            >
+              <div
+                className="footer-subheading"
+                style={{ fontWeight: "600", fontSize:'16px' }}
+              >
+                Select Age
+              </div>
+              <div style={{display:'flex', flexDirection:'column'}}>
+              <DatePicker selected={date} onChange={(date) => setDate(date)} />
+              </div>
+             
+            </div>
+
             {/* <div
               style={{
                 display: "flex",
