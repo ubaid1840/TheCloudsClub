@@ -23,14 +23,13 @@ function MyDrawer() {
   return (
     <>
       <GiHamburgerMenu
-        style={{ cursor: "pointer", marginLeft:'10px' }}
+        style={{ cursor: "pointer", marginLeft: "10px" }}
         color="white"
         size="26px"
         onClick={onOpen}
-        
       />
       <Drawer
-      size={'xs'}
+        size={"xs"}
         isOpen={isOpen}
         placement="left"
         onClose={onClose}
@@ -43,24 +42,28 @@ function MyDrawer() {
             <Img
               style={{
                 height: 120,
-                width: 220,
+                width: 120,
               }}
-              src="/logo.jpg"
+              src="/logo.png"
               alt="The cloud club logo"
             />
           </DrawerHeader>
 
           <DrawerBody marginTop="40px">
-            <VStack
-              spacing={7}
-            >
-                 <Link href="/">
-                 <button className="drawer-button">Home</button>
-                 </Link>
-             
+            <VStack spacing={7} style={{alignItems:'flex-start'}}>
+              <Link href="/">
+                <button className="drawer-button">Home</button>
+              </Link>
+              <Link href="/about-us">
               <button className="drawer-button">About Us</button>
+              </Link>
               <button className="drawer-button">Our Genetics</button>
+              <Link href="/merch">
               <button className="drawer-button">Merch</button>
+              </Link>
+              <Link href="/privacy-policy">
+              <button className="drawer-button">Privacy Policy</button>
+              </Link>
             </VStack>
           </DrawerBody>
 

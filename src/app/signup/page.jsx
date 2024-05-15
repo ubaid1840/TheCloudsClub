@@ -1,5 +1,6 @@
 "use client";
 import MyDrawer from "@/components/myDrawer";
+import { app } from "@/config/firebaseConfig";
 import {
   Img,
   Stack,
@@ -13,11 +14,17 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import {collection, getDocs, getFirestore} from 'firebase/firestore'
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+import Cookies from "js-cookie";
 
-function Signup() {
+function Page() {
+
+  const db = getFirestore(app)
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -26,8 +33,14 @@ function Signup() {
   const [isChecked, setIsChecked] = useState(true);
   const [date, setDate] = useState(new Date());
 
+  // useEffect(()=>{
+  //   Cookies.remove('modalShown');
+  //   Cookies.remove('privayModalShown');
+  // },[])
+
   return (
     <>
+    <Header />
       <div
         style={{
           height: "80px",
@@ -43,7 +56,7 @@ function Signup() {
       >
         <Img
           style={{ width: "100px" }}
-          src="/logo.jpg"
+          src="/logo.png"
           alt="The cloud club logo"
         />
       </div>
@@ -170,7 +183,7 @@ function Signup() {
                 className="footer-subheading"
                 style={{ fontWeight: "600", fontSize:'16px' }}
               >
-                Select Age
+                Date of birth
               </div>
               <div style={{display:'flex', flexDirection:'column'}}>
               <DatePicker selected={date} onChange={(date) => setDate(date)} />
@@ -286,14 +299,16 @@ function Signup() {
             <button
               className="btn"
               style={{ width: "400px", borderWidth: "1px", width: "100%" }}
+              onClick={()=> handleButtonClick()}
             >
               Register
             </button>
           </Stack>
         </Box>
       </Flex>
+      <Footer />
     </>
   );
 }
 
-export default Signup;
+export default Page;

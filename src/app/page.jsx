@@ -14,25 +14,63 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
-import Heading from "@/components/Heading";
+import About from "@/components/about";
 import AgeModal from "@/components/ageModal";
 import Cookies from "js-cookie";
+import Header from "@/components/header";
+import Lottie from "lottie-react";
+import Loader from "./loading";
+import PrivacyModal from "@/components/privacyModal";
+import JoinNowModal from "@/components/joinNowModal";
 
 export default function Home() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAgeModalOpen,
+    onOpen: onAgeModalOpen,
+    onClose: onAgeModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isPrivacyModalOpen,
+    onOpen: onPrivacyModalOpen,
+    onClose: onPrivacyModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isJoinNowModalOpen,
+    onOpen: onJoinNowModalOpen,
+    onClose: onJoinNowModalClose,
+  } = useDisclosure();
+
   const [containHeight, setContainerHeight] = useState("1000px");
   const [imgWidth, setImgWidth] = useState("1000px");
   const [stackMargin, setStackMargin] = useState("1000px");
   const [isModalShown, setIsModalShown] = useState(true);
+  const [isPrivacyModalShown, setIsPrivacyModalShown] = useState(true);
+  const [isJoinNowModalShown, setIsJoinNowModalShown] = useState(true);
+  const [allowOtherItems, setAllowOtherItems] = useState(false)
+
+  useEffect(() => {
+    const privacyModalShown = Cookies.get("privayModalShown");
+    if (!privacyModalShown) {
+      onPrivacyModalOpen();
+    } else {
+      setIsPrivacyModalShown(false);
+    }
+  }, []);
 
   useEffect(() => {
     const modalShown = Cookies.get("modalShown");
     if (!modalShown) {
-      onOpen();
+      onAgeModalOpen();
     } else {
       setIsModalShown(false);
     }
   }, []);
+
+  useEffect(()=>{
+    setAllowOtherItems(true)
+    onJoinNowModalOpen()
+   
+  },[])
 
   useEffect(() => {
     const handleScroll = () => {
@@ -55,14 +93,25 @@ export default function Home() {
     };
   }, []);
 
-  const handleYesClick = () => {
-    Cookies.set("modalShown", "true", { expires: 1 });
-    setIsModalShown(false);
-    onClose();
+  const handleYesClick = (val) => {
+    if (val == "age") {
+      Cookies.set("modalShown", "true", { expires: 1 });
+      setIsModalShown(false);
+      onAgeModalClose();
+    } else {
+      Cookies.set("privayModalShown", "true", { expires: 1 });
+      setIsPrivacyModalShown(false);
+      onPrivacyModalClose();
+    }
+  };
+
+  const handleNoClick = () => {
+    setIsPrivacyModalShown(false);
   };
 
   return (
     <>
+    <Header />
       <div
         style={{
           height: containHeight,
@@ -77,8 +126,8 @@ export default function Home() {
         }}
       >
         <Img
-          style={{ maxWidth: "85%", width: imgWidth }}
-          src="/logo.jpg"
+          style={{ maxWidth: "65%", width: imgWidth }}
+          src="/logo.png"
           alt="The cloud club logo"
         />
       </div>
@@ -94,15 +143,36 @@ export default function Home() {
           paddingLeft: "10px",
         }}
       >
-        <Heading />
+        <About />
       </Stack>
-      {isModalShown && (
-        <AgeModal
-          isOpen={isOpen}
-          onClose={onClose}
-          onYesClick={handleYesClick}
+     {allowOtherItems && ( <Footer /> )} 
+
+     {isJoinNowModalShown && (
+        <JoinNowModal
+          isOpen={isJoinNowModalOpen}
+          onClose={onJoinNowModalClose}
         />
       )}
+
+      
+      {isModalShown && (
+        <AgeModal
+          isOpen={isAgeModalOpen}
+          onClose={onAgeModalClose}
+          onYesClick={() => handleYesClick("age")}
+        />
+      )}
+
+      {isPrivacyModalShown && (
+        <PrivacyModal
+          onNoClick={handleNoClick}
+          isOpen={isPrivacyModalOpen}
+          onClose={onPrivacyModalClose}
+          onYesClick={() => handleYesClick("privacy")}
+        />
+      )}
+
+    
     </>
   );
 }

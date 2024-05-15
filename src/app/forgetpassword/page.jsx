@@ -1,4 +1,6 @@
 "use client";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import MyDrawer from "@/components/myDrawer";
 import {
   Img,
@@ -15,11 +17,12 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
-function ForgetPassword() {
+function Page() {
   const [email, setEmail] = useState("");
 
   return (
     <>
+    <Header />
       <div
         style={{
           height: "80px",
@@ -35,7 +38,7 @@ function ForgetPassword() {
       >
         <Img
           style={{ width: "100px" }}
-          src="/logo.jpg"
+          src="/logo.png"
           alt="The cloud club logo"
         />
       </div>
@@ -114,8 +117,9 @@ function ForgetPassword() {
           </Stack>
         </Box>
       </Flex>
+      <Footer />
     </>
   );
 }
 
-export default ForgetPassword;
+export default Page;

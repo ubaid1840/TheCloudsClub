@@ -10,6 +10,7 @@ import {
   useColorModeValue,
   SimpleGrid,
   useMediaQuery,
+  Text
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiInstagramFill } from "react-icons/ri";
@@ -39,16 +40,16 @@ export default function Footer() {
       >
         {isLargerThan500 ? (
           <Img
-            style={{ height: 120, width: 220, marginTop: 20, marginBottom: 20 }}
-            src="/logo.jpg"
+            style={{ height: 160, width: 160,  }}
+            src="/logo.png"
             alt="The cloud club logo"
           />
         ) : null}
 
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
-          <div className="footer-heading">Get in touch</div>
-          <div className="footer-subheading">a: The Cloud Club, Germany</div>
-          <div className="footer-subheading">p: +49 1762 2047 2894</div>
+          <Text className="footer-heading">Get in touch</Text>
+          <Text className="footer-subheading">a: The CloudClub68</Text>
+          <Text className="footer-subheading">e: support@cloudclub.cc</Text>
         </VStack>
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <div className="footer-heading">Quick Links</div>
@@ -60,7 +61,7 @@ export default function Footer() {
         </VStack>
 
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
-          <div className="footer-heading">Newsletter</div>
+          <Text className="footer-heading">Newsletter</Text>
           <Stack
             direction={{ base: "column", md: "row" }}
             as={"form"}
@@ -107,7 +108,7 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              <button className="btn" isLoading={state === "submitting"}>
+              <button className="btn">
                 Subscribe
               </button>
             </div>
@@ -138,9 +139,9 @@ export default function Footer() {
         }}
         alignItems={"center"}
       >
-        <div className="footer-subheading" style={{ fontSize: "14px" }}>
+        <Text className="footer-subheading" style={{ fontSize: "14px" }}>
           © 2024 ALL RIGHTS RESERVED THE CLOUD CLUB
-        </div>
+        </Text>
         <div style={{ flex: "display" }}>
           <HStack
             spacing={5}

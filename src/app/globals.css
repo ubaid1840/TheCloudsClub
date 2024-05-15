@@ -172,13 +172,6 @@ a {
   left: 5px;
 }
 
-@font-face {
-  font-family: "customFont";
-  src: url("/fonts/Montserrat-VariableFont_wght.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
 .link {
   color: white;
   font-weight: 600;
@@ -190,21 +183,69 @@ a {
 }
 
 .react-datepicker-ignore-onclickoutside {
-  padding  : 10px;
+  padding: 10px;
   background-color: black;
-  color: white; 
+  color: white;
   border-width: 1px;
   border-color: white;
   border-radius: 5px;
 }
 
 input {
-  padding  : 10px;
+  padding: 10px;
   background-color: black;
-  color: white; 
+  color: white;
   border-width: 1px;
   border-color: white;
   border-radius: 5px;
+}
+
+.option-box {
+  width: 200px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  background-color: #adadad;
+  align-items: center;
+  border-radius: 5px;
+  justify-content: space-between;
+}
+
+.option-box:hover {
+  background-color: #af89af;
+  cursor: pointer;
+}
+
+.option-sub-box {
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+}
+
+.step1.active,
+.step2.active,
+.step3.active,
+.step4.active,
+.step5.active,
+.step6.active,
+.step7.active {
+  opacity: 1;
+  transform: translateY(0);
+  animation: slideFromBottom 0.5s ease-in-out;
+}
+
+@keyframes slideFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* .react-datepicker__day--selected {

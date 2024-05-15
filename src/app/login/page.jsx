@@ -1,4 +1,6 @@
 "use client";
+import Footer from "@/components/footer";
+import Header from "@/components/header";
 import MyDrawer from "@/components/myDrawer";
 import {
   Img,
@@ -14,15 +16,16 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
-function Login() {
+function Page() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState("initial");
   const [password, setPassword] = useState("");
 
   return (
     <>
+    <Header />
       <div style={{height:'80px', alignItems: 'center', justifyContent: 'center', display: 'flex', marginTop: '40px', backgroundColor: 'black', width: '100vw', position: 'fixed', zIndex:999 }}>
-        <Img style={{ width:'100px' }} src='/logo.jpg' alt='The cloud club logo' />
+        <Img style={{ width:'100px' }} src='/logo.png' alt='The cloud club logo' />
       </div>
       <Flex
         width="100vw"
@@ -133,8 +136,9 @@ function Login() {
             </Stack>
         </Box>
       </Flex>
+      <Footer />
     </>
   );
 }
 
-export default Login;
+export default Page;
