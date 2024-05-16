@@ -1,4 +1,5 @@
 "use client";
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./globals.css";
 import Link from "next/link";
 import {
@@ -22,6 +23,7 @@ import Lottie from "lottie-react";
 import Loader from "./loading";
 import PrivacyModal from "@/components/privacyModal";
 import JoinNowModal from "@/components/joinNowModal";
+import axios from "axios";
 
 export default function Home() {
   const {
@@ -46,7 +48,6 @@ export default function Home() {
   const [isModalShown, setIsModalShown] = useState(true);
   const [isPrivacyModalShown, setIsPrivacyModalShown] = useState(true);
   const [isJoinNowModalShown, setIsJoinNowModalShown] = useState(true);
-  const [allowOtherItems, setAllowOtherItems] = useState(false)
 
   useEffect(() => {
     const privacyModalShown = Cookies.get("privayModalShown");
@@ -67,8 +68,14 @@ export default function Home() {
   }, []);
 
   useEffect(()=>{
-    setAllowOtherItems(true)
-    onJoinNowModalOpen()
+    const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
+    const userID = Cookies.get("cloudClubUserId");
+    if(userID && isAuthenticated){
+      
+    } else {
+      onJoinNowModalOpen()
+    }
+   
    
   },[])
 
@@ -145,7 +152,7 @@ export default function Home() {
       >
         <About />
       </Stack>
-     {allowOtherItems && ( <Footer /> )} 
+     <Footer /> 
 
      {isJoinNowModalShown && (
         <JoinNowModal

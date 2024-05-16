@@ -248,19 +248,6 @@ input {
   }
 }
 
-/* .react-datepicker__day--selected {
-  background-color  : black !important;
-  color: white !important;
-  border-radius: 50px !important;
+*:focus {
+  outline: none;
 }
-
-.react-datepicker__month {
-  padding: 0.4rem !important;
-  text-align: center !important;
-  background-color: rgb(80, 80, 80) !important;
-  color: white !important;
-}
-
-.react-datepicker__day {
-  color: white !important;
-} */

@@ -12,13 +12,23 @@ import {
   VStack,
   Img,
 } from "@chakra-ui/react";
+import Cookies from "js-cookie";
 import Link from "next/link";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GiHamburgerMenu } from "react-icons/gi";
 
 function MyDrawer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef();
+  const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
+    const userID = Cookies.get("cloudClubUserId");
+    if (userID == 1 && isAuthenticated) {
+      setIsLogin(true);
+    }
+  }, []);
 
   return (
     <>
@@ -50,19 +60,24 @@ function MyDrawer() {
           </DrawerHeader>
 
           <DrawerBody marginTop="40px">
-            <VStack spacing={7} style={{alignItems:'flex-start'}}>
+            <VStack spacing={7} style={{ alignItems: "flex-start" }}>
+              {isLogin ? (
+                <Link href="/admin-panel">
+                  <button className="drawer-button">Admin Panel</button>
+                </Link>
+              ) : null}
               <Link href="/">
                 <button className="drawer-button">Home</button>
               </Link>
               <Link href="/about-us">
-              <button className="drawer-button">About Us</button>
+                <button className="drawer-button">About Us</button>
               </Link>
               <button className="drawer-button">Our Genetics</button>
               <Link href="/merch">
-              <button className="drawer-button">Merch</button>
+                <button className="drawer-button">Merch</button>
               </Link>
               <Link href="/privacy-policy">
-              <button className="drawer-button">Privacy Policy</button>
+                <button className="drawer-button">Privacy Policy</button>
               </Link>
             </VStack>
           </DrawerBody>

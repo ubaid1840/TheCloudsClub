@@ -12,76 +12,93 @@ import {
   useColorModeValue,
   Box,
   Flex,
+  HStack,
+  Heading,
+  Icon,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loader from "../loading";
 import Cookies from "js-cookie";
-import {CustomToast} from '../../components/myToast'
+import { CustomToast } from "../../components/myToast";
 import { redirect, useRouter } from "next/navigation";
 import FixedLogo from "@/components/fixedLogo";
+import SimpleSidebar from "@/components/sidebar";
+
+import { RepeatIcon } from "@chakra-ui/icons";
+import MyTable from "@/components/table";
 
 function Page() {
-  const [email, setEmail] = useState("");
+  const [emails, setEmails] = useState([]);
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false)
-  const { addToast } = CustomToast()
-  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const { addToast } = CustomToast();
+  const router = useRouter();
+  const [totalUsers, setTotalUsers] = useState(0);
+  const [page, setPage] = useState("Dashboard");
+  const [memberData, setMemberData] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
     const userID = Cookies.get("cloudClubUserId");
-    if(userID && isAuthenticated){
-      router.replace("/")
+    if (userID && isAuthenticated) {
+    } else {
+      router.replace("/");
     }
-  },[])
+  }, []);
 
-  async function handleLogin() {
-    const formData = {
-      'email' : email,
-      'password' : password
+  useEffect(() => {
+    if(page == 'Dashboard'){
+      fetchAllUsers();
     }
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/login.php`,
-        formData,
-        {
-          withCredentials: false,
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if(response?.data?.message){
-        if(response.data.message == 'Login successful'){
-          Cookies.set('cloudClubAuthToken', 'true', { expires: 365 }); // Expires in 1 year
-          Cookies.set('cloudClubUserId', response?.data?.id, { expires: 365 });
-          addToast({message: "Login Successful", type: "success"})
-          if(response?.data?.id == 1){
-            router.replace('/admin-panel')
-          } else {
-            router.replace('/')
-          }
-        }
-      }
-      else {
-        addToast({message: "Unexpected response format", type: "error"})
-      }
-     
+    else if(page == 'Members'){
+      fetchAllUsers()
+    } else {
+      fetchAllEmails()
+    }
+   
+  }, [page]);
+
+  async function fetchAllEmails () {
+
+    try {  
+      await axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/getallusers.php`, {
+        withCredentials: false,
+      }).then((response)=>{
+        console.log(response)
+      })
+      
     } catch (error) {
       console.log(error)
-      addToast({message: "Login error", type: "error"})
-     
-    } finally {
-      setLoading(false);
     }
+  
+  }
+
+  async function fetchAllUsers() {
+
+    try {
+      await axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL}/getallusers.php`, {
+        withCredentials: false,
+      })
+      .then((response) => {
+        if (response?.data?.length > 0) {
+          setTotalUsers(response.data.length)
+          setMemberData(response.data)
+        }
+      });
+    } catch (error) {
+      console.log(error)
+    }
+  
   }
 
   return (
     <>
-      <Header />
-    <FixedLogo />
+      {/* <Header /> */}
+      {/* <FixedLogo />
       <Flex
         width="100vw"
         backgroundColor="black"
@@ -222,7 +239,88 @@ function Page() {
           </Stack>
         </Box>
       </Flex>
-      <Footer />
+      <Footer /> */}
+      <div
+        style={{
+          display: "flex",
+          width: "100vw",
+          height: "100vh",
+          flexDirection: "row",
+          // backgroundColor: "gray.400",
+        }}
+      >
+        <SimpleSidebar onReturn={(val) => setPage(val)} />
+        <Box
+          minH="100vh"
+          width={"100%"}
+          bg={useColorModeValue("gray.100", "gray.900")}
+          paddingTop={"20px"}
+          justifyContent={"center"}
+          display={"flex"}
+        >
+          {page == "Dashboard" ? (
+            <Box
+              width={"300px"}
+              height={"130px"}
+              bg={"#C32F3D"}
+              overflow={"hidden"}
+              borderRadius={"5px"}
+            >
+              <VStack width={"100%"} spacing={0}>
+                <HStack justifyContent={"space-between"} color={"white"}>
+                  <VStack style={{ alignItems: "flex-start" }} spacing={0}>
+                    <Heading
+                      style={{ fontWeight: "900", fontSize: 34 }}
+                      letterSpacing={2}
+                    >
+                      {totalUsers}
+                    </Heading>
+                    <Heading fontSize={18} fontWeight={"500"} letterSpacing={2}>
+                      Total Members
+                    </Heading>
+                  </VStack>
+                  <div>
+                    <Img
+                      style={{ width: "100px", height: "100px", opacity: 0.2 }}
+                      src="/user-plus.png"
+                      alt="user registration"
+                    />
+                  </div>
+                </HStack>
+                <div
+                  style={{
+                    height: "30px",
+                    width: "100%",
+                    backgroundColor: "#860815",
+                    alignItems: "center",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <RepeatIcon
+                    color={"white"}
+                    style={{ cursor: "pointer" }}
+                    _hover={{ color: "cyan" }}
+                    onClick={fetchAllUsers}
+                  />
+                </div>
+              </VStack>
+            </Box>
+          ) : page == "Members" ? (
+            <Box
+            minH="100vh"
+            width={"100%"}
+            // bg={useColorModeValue("gray.100", "gray.900")}
+            paddingTop={"20px"}
+            justifyContent={"center"}
+            display={"flex"}>
+              <MyTable data={memberData}/>
+            </Box>
+          ) : page == "Emails" ? (
+            <Box></Box>
+          ) : null}
+        </Box>
+      </div>
       {loading ? <Loader /> : null}
     </>
   );

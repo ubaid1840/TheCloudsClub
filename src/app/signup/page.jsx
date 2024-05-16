@@ -21,6 +21,7 @@ import {collection, getDocs, getFirestore} from 'firebase/firestore'
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 
 function Page() {
 
@@ -33,10 +34,20 @@ function Page() {
   const [isChecked, setIsChecked] = useState(true);
   const [date, setDate] = useState(new Date());
 
+  const router = useRouter()
+
   // useEffect(()=>{
-  //   Cookies.remove('modalShown');
-  //   Cookies.remove('privayModalShown');
+  //   Cookies.remove('cloudClubAuthToken');
+  //   Cookies.remove('cloudClubUserId');
   // },[])
+
+  useEffect(()=>{
+    const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
+    const userID = Cookies.get("cloudClubUserId");
+    if(userID && isAuthenticated){
+      router.replace("/")
+    }
+  },[])
 
   return (
     <>

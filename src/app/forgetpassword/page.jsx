@@ -1,4 +1,5 @@
 "use client";
+import FixedLogo from "@/components/fixedLogo";
 import Footer from "@/components/footer";
 import Header from "@/components/header";
 import MyDrawer from "@/components/myDrawer";
@@ -23,25 +24,7 @@ function Page() {
   return (
     <>
     <Header />
-      <div
-        style={{
-          height: "80px",
-          alignItems: "center",
-          justifyContent: "center",
-          display: "flex",
-          marginTop: "40px",
-          backgroundColor: "black",
-          width: "100vw",
-          position: "fixed",
-          zIndex: 999,
-        }}
-      >
-        <Img
-          style={{ width: "100px" }}
-          src="/logo.png"
-          alt="The cloud club logo"
-        />
-      </div>
+     <FixedLogo />
       <Flex
         width="100vw"
         backgroundColor="black"
