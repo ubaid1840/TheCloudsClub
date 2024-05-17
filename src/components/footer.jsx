@@ -49,7 +49,7 @@ export default function Footer() {
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <Text className="footer-heading">Get in touch</Text>
           <Text className="footer-subheading">a: The CloudClub68</Text>
-          <Text className="footer-subheading">e: support@cloudclub.cc</Text>
+          <Text className="footer-subheading">e: support@thecloudclub.cc</Text>
         </VStack>
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <div className="footer-heading">Quick Links</div>

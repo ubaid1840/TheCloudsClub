@@ -1,4 +1,5 @@
-import React, { ReactNode } from 'react';
+"use client"
+import React, { ReactNode, useEffect } from "react";
 import {
   IconButton,
   Box,
@@ -14,7 +15,8 @@ import {
   BoxProps,
   FlexProps,
   Img,
-} from '@chakra-ui/react';
+  Divider,
+} from "@chakra-ui/react";
 import {
   FiHome,
   FiTrendingUp,
@@ -22,24 +24,24 @@ import {
   FiStar,
   FiSettings,
   FiMenu,
-  FiMail
-} from 'react-icons/fi';
-
+  FiMail,
+} from "react-icons/fi";
+import { usePathname } from "next/navigation";
 
 const LinkItems = [
-  { name: 'Dashboard', icon: FiHome },
-  { name: 'Emails', icon: FiMail },
-  {name : 'Members', icon : FiStar}
+  { name: "Dashboard", icon: FiHome, path : '/admin-panel/dashboard/' },
+  { name: "Emails", icon: FiMail, path : '/admin-panel/emails/' },
+  { name: "Members", icon: FiStar, path : '/admin-panel/members/' },
 ];
 
-export default function SimpleSidebar({ children ,  onReturn}) {
+export default function SimpleSidebar({ children }) {
+ 
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
-    <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+    <Box minH="100vh" width={'100%'} bg={useColorModeValue("gray.100", "gray.900")} >
       <SidebarContent
         onClose={() => onClose}
-        display={{ base: 'none', md: 'block' }}
-        onReturn={onReturn}
+        display={{ base: "none", md: "block" }}
       />
       <Drawer
         autoFocus={false}
@@ -48,42 +50,47 @@ export default function SimpleSidebar({ children ,  onReturn}) {
         onClose={onClose}
         returnFocusOnClose={false}
         onOverlayClick={onClose}
-        size="full">
+        size="full"
+      >
         <DrawerContent>
-          <SidebarContent onClose={onClose}  onReturn={onReturn}/>
+          <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
       {/* mobilenav */}
-      <MobileNav display={{ base: 'flex', md: 'none' }} onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
+      <MobileNav display={{ base: "flex", md: "none" }} onOpen={onOpen} />
+      <Box ml={{ base: 0, md: 60 }}>
         {children}
       </Box>
     </Box>
   );
 }
 
-
-const SidebarContent = ({ onClose,  onReturn, ...rest}) => {
+const SidebarContent = ({ onClose, ...rest }) => {
   return (
     <Box
-      bg={useColorModeValue('white', 'gray.900')}
-      borderRight="1px"
-      borderRightColor={useColorModeValue('gray.200', 'gray.700')}
-      w={{ base: 'full', md: 60 }}
+    paddingTop={'20px'}
+      boxShadow="xl"
+      backgroundColor={"#343a40"}
+      // borderRight="1px"
+      // borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+      // boxShadow='md'
+      w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
-      {...rest}>
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">   
+      zIndex={2}
+      {...rest}
+    >
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" paddingTop={'20px'} paddingBottom={'20px'}>
         <Img
           style={{ width: "100px" }}
-          src="/invert-logo.png"
+          src="/logo.png"
           alt="The cloud club logo"
-          
         />
-        <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
+        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
+      <Divider orientation="horizontal"/>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon} onReturn={onReturn}>
+        <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}
         </NavItem>
       ))}
@@ -91,27 +98,40 @@ const SidebarContent = ({ onClose,  onReturn, ...rest}) => {
   );
 };
 
-const NavItem = ({ icon, children, onReturn, ...rest }) => {
+const NavItem = ({ icon, children, path, ...rest }) => {
+
+  const pathname = usePathname()
+
   return (
-    <Link href="#" style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }} onClick={()=> onReturn(children)}>
+    <Link href={path}
+      style={{ textDecoration: "none", color: "#c2c7d0" }}
+      _focus={{ boxShadow: "none" }}
+    >
       <Flex
+      
+        fontWeight={"700"}
         align="center"
-        p="4"
+        py="2"
+        px='4'
         mx="4"
+        my='2'
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        bg={pathname == path && "#4B535C"}
+        color={pathname == path && "white" }
         _hover={{
-          bg: 'cyan.400',
-          color: 'white',
+          bg: useColorModeValue('purple.500', 'purple.500'),
+          color: "white",
         }}
-        {...rest}>
+        {...rest}
+      >
         {icon && (
           <Icon
             mr="4"
             fontSize="16"
             _groupHover={{
-              color: 'white',
+              color: "white",
             }}
             as={icon}
           />
@@ -129,11 +149,12 @@ const MobileNav = ({ onOpen, ...rest }) => {
       px={{ base: 4, md: 24 }}
       height="20"
       alignItems="center"
-      bg={useColorModeValue('white', 'gray.900')}
+      bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
-      borderBottomColor={useColorModeValue('gray.200', 'gray.700')}
+      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
       justifyContent="flex-start"
-      {...rest}>
+      {...rest}
+    >
       <IconButton
         variant="outline"
         onClick={onOpen}

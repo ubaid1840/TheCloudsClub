@@ -26,6 +26,7 @@
     "nextjs-toploader": "^1.6.12",
     "react": "^18",
     "react-bootstrap": "^2.10.2",
+    "react-data-table-component": "^7.6.2",
     "react-date-picker": "^11.0.0",
     "react-datepicker": "^6.9.0",
     "react-dom": "^18",

@@ -8,10 +8,10 @@ import {
   Td,
   TableCaption,
   TableContainer,
+  useColorModeValue,
 } from "@chakra-ui/react";
 
 export default function MyTable({ data }) {
-  console.log(data);
 
   return (
     <TableContainer width={"90%"}>
@@ -21,10 +21,10 @@ export default function MyTable({ data }) {
         borderWidth={"2px"}
         borderColor={"#E9E9E9"}
       >
-        <TableCaption>Members Data</TableCaption>
-        <Thead bg={"cyan.400"}>
-          <Tr>
-            <Th>ID</Th>
+        <TableCaption fontSize={26}>Members Data</TableCaption>
+        <Thead bg={'white'} >
+          <Tr >
+            <Th >ID</Th>
             <Th>Name</Th>
             <Th>Email</Th>
             <Th>Age</Th>
@@ -32,9 +32,9 @@ export default function MyTable({ data }) {
             <Th>Cannabis Required</Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {data?.map((item) => (
-            <Tr>
+        <Tbody bg={'white'}>
+          {data?.map((item, index) => (
+            <Tr key={index}>
               <Td>{item.id}</Td>
               <Td>{item.name}</Td>
               <Td>{item.email}</Td>
