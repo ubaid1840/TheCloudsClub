@@ -101,7 +101,7 @@ function Header() {
               variant="unstyled"
             />
             <MenuList style={{ marginRight: "10px" }}>
-              <MenuItem>Profile</MenuItem>
+            <Link href={'/profile'}><MenuItem >Profile</MenuItem></Link>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </MenuList>
           </Menu>

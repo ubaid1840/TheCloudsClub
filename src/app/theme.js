@@ -21,6 +21,13 @@ const theme = extendTheme({
     body : 'Source Code Pro'
   },
   initialColorMode: 'dark',
+  components: {
+    Button : {
+      defaultProps: {
+        colorScheme: 'teal', // default is gray
+      },
+    }
+  }
  })
 
 export default theme

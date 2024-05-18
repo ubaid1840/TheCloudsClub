@@ -56,8 +56,12 @@ export default function Footer() {
           <Link href="/">
             <div className="footer-subheading">Home</div>
           </Link>
+          <Link href="/profile">
           <div className="footer-subheading">Profile</div>
+          </Link>
+          <Link href="/merch">
           <div className="footer-subheading">Merchandise</div>
+          </Link>
         </VStack>
 
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
@@ -108,9 +112,9 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              <button className="btn">
+              <Button className="btn">
                 Subscribe
-              </button>
+              </Button>
             </div>
           </Stack>
         </VStack>

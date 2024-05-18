@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   Box,
   Flex,
+  Spinner,
 } from "@chakra-ui/react";
 import axios from "axios";
 import Link from "next/link";
@@ -28,12 +29,19 @@ function Page() {
   const [loading, setLoading] = useState(false)
   const { addToast } = CustomToast()
   const router = useRouter()
+  const [pageLoading, setPageLoading] = useState(true)
 
   useEffect(()=>{
     const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
     const userID = Cookies.get("cloudClubUserId");
     if(userID && isAuthenticated){
       router.replace("/")
+    }
+  },[])
+
+  useEffect(()=>{
+    if(pageLoading){
+      setPageLoading(false)
     }
   },[])
 
@@ -53,6 +61,7 @@ function Page() {
           },
         }
       );
+      console.log(response)
       if(response?.data?.message){
         if(response.data.message == 'Login successful'){
           Cookies.set('cloudClubAuthToken', 'true', { expires: 365 }); // Expires in 1 year
@@ -92,6 +101,7 @@ function Page() {
         paddingTop={{ base: "120px", md: "160px", lg: "160px" }}
         paddingBottom={{ base: "20px", md: "120px", lg: "120px" }}
       >
+       {pageLoading ? <Spinner /> : null} 
         <Box
           bg={"transparent"}
           display={"flex"}
@@ -192,7 +202,7 @@ function Page() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <Link href="/forgetpassword" style={{ alignSelf: "flex-end" }}>
+            {/* <Link href="/forgetpassword" style={{ alignSelf: "flex-end" }}>
               <Button
                 variant="link"
                 className="footer-subheading"
@@ -200,7 +210,7 @@ function Page() {
               >
                 Forget Password
               </Button>
-            </Link>
+            </Link> */}
             <Button
               isDisabled={
                 email.includes("@") &&
@@ -213,7 +223,6 @@ function Page() {
                 setLoading(true)
                 handleLogin()
               }}
-              colorScheme={"purple"}
               className="btn"
               style={{ width: "400px", borderWidth: "0px", width: "100%" }}
             >

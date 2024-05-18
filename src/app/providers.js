@@ -5,24 +5,25 @@ import Footer from '@/components/footer'
 import './globals.css'
 import Header from '@/components/header'
 import { useEffect, useState } from 'react'
+import Loader from './loading'
 
 
 export function Providers(props) {
   const [visible, setVisible] = useState(false)
 
 
-  // useEffect(()=>{
-  //   if(!visible){
-  //     setVisible(true)
-  //   }
-  // },[visible])
+  useEffect(() => {
+    if (!visible) {
+      setVisible(true)
+    }
+  }, [visible])
 
   const { children, ...rest } = props
- 
+
   return (
     <ChakraProvider theme={theme}>
-          {/* {visible ? children : null} */}
-          {children}
+      {!visible ? <Loader /> :
+        children}
     </ChakraProvider>
   )
 

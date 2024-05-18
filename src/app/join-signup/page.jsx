@@ -1,6 +1,4 @@
 "use client";
-import MyDrawer from "@/components/myDrawer";
-import { app } from "@/config/firebaseConfig";
 import {
   Img,
   Stack,
@@ -14,35 +12,37 @@ import {
   Flex,
   Heading,
   Progress,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import Cookies from "js-cookie";
-import { CheckIcon } from "@chakra-ui/icons";
+import { CheckIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import Loader from "../loading";
 import { CustomToast } from "@/components/myToast";
 import { useRouter } from "next/navigation";
 import FixedLogo from "@/components/fixedLogo";
+import CannotJoinModal from "@/components/cannotJoinModal";
 
 function Signup() {
-  const db = getFirestore(app);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [steps, setSteps] = useState(1);
-  const [selectedOption, setSelectedOption] = useState("");
+  const [age, setAge] = useState("");
   const [yesNoSelection, setYesNotSelection] = useState("");
   const [cannabisSelection, setCannabisSelection] = useState("");
   const [city, setCity] = useState("");
   const [progress, setProgress] = useState(0);
   const [loading, setLoading] = useState(false);
   const { addToast } = CustomToast();
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const [address, setAddress] = useState('')
 
   const router = useRouter();
 
@@ -72,15 +72,23 @@ function Signup() {
   }
 
   function handleNextStep() {
-    setProgress(progress + 17);
-    setSteps((prevState) => {
-      const newState = prevState + 1;
-      return newState;
-    });
+    if (steps != 7) {
+      setProgress(progress + 15);
+      setSteps((prevState) => {
+        const newState = prevState + 1;
+        return newState;
+      });
+    }
   }
 
-  function handleSelection(val) {
-    setSelectedOption(val);
+  function handlePreviousStep() {
+    if (steps != 1) {
+      setProgress(progress - 15);
+      setSteps((prevState) => {
+        const newState = prevState - 1;
+        return newState;
+      });
+    }
   }
 
   function handleCannabisSelection(val) {
@@ -88,17 +96,22 @@ function Signup() {
   }
 
   function handleYesNoSelection(val) {
-    setYesNotSelection(val);
+    if (val == "Ja") {
+      onOpen();
+    } else {
+      setYesNotSelection(val)
+    }
   }
 
   async function handleFinish() {
     const formData = {
       email: email,
       name: name,
-      age: selectedOption,
+      age: age,
       alreadyMember: yesNoSelection,
       city: city,
       requiredCannabis: cannabisSelection,
+      address : address,
       password: password,
     };
 
@@ -113,27 +126,86 @@ function Signup() {
           },
         }
       );
-
-      if (response?.data?.message) {
-        if (response?.data?.message == "User registered successfully") {
-          addToast({ message: "Welcome to the club", type: "success" });
-          handleNextStep();
-        } else {
-          if (response?.data?.includes("Duplicate entry")) {
-            addToast({ message: "Email already exists", type: "error" });
-          } else if (response.status == 500) {
-            addToast({ message: "Error registering user", type: "error" });
-          } else {
-            addToast({ message: "Registration error", type: "error" });
-          }
-        }
-      }
+      addToast({ message: "Welcome to the club", type: "success" });
+      setProgress(progress + 15);
+      setSteps((prevState) => {
+        const newState = prevState + 1;
+        return newState;
+      });
+      
     } catch (error) {
-      addToast({ message: "Registration error", type: "error" });
+      console.log(error.response.data.error)
+      addToast({ message: error.response.data.error, type: "error" });
     } finally {
       setLoading(false);
     }
   }
+
+  const validateDate = (dateString) => {
+    const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
+    if (!regex.test(dateString)) {
+      console.log("Date format is incorrect. Please use DD/MM/YYYY format.");
+      return false;
+    }
+    const [day, month, year] = dateString.split("/").map(Number);
+    const date = new Date(year, month - 1, day);
+    if (
+      date.getFullYear() === year &&
+      date.getMonth() + 1 === month &&
+      date.getDate() === day
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
+  const FloatingButton = ({ onClick }) => {
+    return (
+      <div className="floating-button">
+        <Box
+          bg="teal.500"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          _hover={{ bg: "teal.400" }}
+          padding={"5px"}
+          color={"white"}
+        >
+          <TriangleDownIcon
+            boxSize={6}
+            cursor={"pointer"}
+            onClick={handleNextStep}
+          />
+        </Box>
+        <Box
+          ml={"2px"}
+          bg="teal.500"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          _hover={{ bg: "teal.400" }}
+          padding={"5px"}
+          color={"white"}
+        >
+          <TriangleUpIcon
+            boxSize={6}
+            cursor={"pointer"}
+            onClick={handlePreviousStep}
+          />
+        </Box>
+      </div>
+    );
+  };
+
+  function validateFinish () {
+    if( email.includes("@") && password.length > 7 && email.includes(".") && name && age &&  yesNoSelection && city && cannabisSelection && address ){
+      return false
+    } else {
+      return true
+    }
+  }
+
   return (
     <>
       <Header />
@@ -152,7 +224,7 @@ function Signup() {
         paddingRight={{ base: "5px", md: "0px", lg: "0px" }}
       >
         <Progress
-          colorScheme={"purple"}
+          colorScheme={"teal"}
           value={progress}
           width={"100vw"}
           marginBottom={10}
@@ -161,8 +233,8 @@ function Signup() {
           bg={"transparent"}
           display={"flex"}
           flexDir={"column"}
-          alignItems="center"
-          width={{ base: "95%", sm: "70%", md: "35%" }}
+          alignItems={{ base: "center", sm: "center", md: "flex-start" }}
+          width={{ base: "95%", sm: "70%", md: "500px" }}
         >
           <div className={`step${steps}`}>
             {steps == 1 && (
@@ -176,9 +248,7 @@ function Signup() {
                 <Text color={"white"} fontSize={20} fontWeight={700}>
                   {`1 -> Unter welcher Emailadresse dürfen wir dich kontaktieren?*`}
                 </Text>
-                <Text color={"white"}>
-                  Frage 1 von 6 (unter 1 Minute Zeitaufwand)
-                </Text>
+                <Text color={"white"}>Frage 1 von 7</Text>
                 <div>
                   <Text color={"white"}>Email</Text>
 
@@ -240,7 +310,6 @@ function Signup() {
                   />
                 </div>
                 <Button
-                  colorScheme={"purple"}
                   onClick={handleNextStep}
                   style={{ width: "50px" }}
                   isDisabled={
@@ -264,9 +333,9 @@ function Signup() {
                 className={`step${steps} ${steps === 2 ? "active" : ""}`}
               >
                 <Text color={"white"} fontSize={20} fontWeight={700}>
-                  {`2 -> Wie heißt du?`}
+                  {`2 -> Vor und Nachname`}
                 </Text>
-                <Text color={"white"}>Frage 2 von 6</Text>
+                <Text color={"white"}>Frage 2 von 7</Text>
                 <div>
                   <Input
                     style={{
@@ -296,7 +365,6 @@ function Signup() {
                   />
                 </div>
                 <Button
-                  colorScheme={"purple"}
                   onClick={handleNextStep}
                   style={{ width: "50px" }}
                   isDisabled={name.trim().length < 1 ? true : false}
@@ -315,101 +383,41 @@ function Signup() {
                 className={`step${steps} ${steps === 3 ? "active" : ""}`}
               >
                 <Text color={"white"} fontSize={20} fontWeight={700}>
-                  {`3 -> Wie alt bist du?`}
+                  {`3 -> Was ist Ihr Geburtsdatum?*`}
                 </Text>
-                <Text color={"white"}>Frage 3 von 6</Text>
-                <Stack
-                  spacing={4}
-                  display={"flex"}
-                  flexDir={"column"}
-                  width={"100%"}
-                >
-                  <div
-                    className="option-box"
-                    onClick={() => handleSelection("unter 21")}
-                  >
-                    <div
-                      className="option-sub-box"
-                      style={{
-                        backgroundColor:
-                          selectedOption == "unter 21" && "#580058",
-                        color: selectedOption == "unter 21" && "white",
-                      }}
-                    >
-                      A
-                    </div>
-                    <Text>unter 21</Text>
-                    <div style={{ width: "20px" }}>
-                      {selectedOption == "unter 21" && <CheckIcon />}
-                    </div>
-                  </div>
-                  <div
-                    className="option-box"
-                    onClick={() => handleSelection("21-35")}
-                  >
-                    <div
-                      className="option-sub-box"
-                      style={{
-                        backgroundColor: selectedOption == "21-35" && "#580058",
-                        color: selectedOption == "21-35" && "white",
-                      }}
-                    >
-                      B
-                    </div>
-                    <Text>21-35</Text>
-                    <div style={{ width: "20px" }}>
-                      {selectedOption == "21-35" && <CheckIcon />}
-                    </div>
-                  </div>
-                  <div
-                    className="option-box"
-                    onClick={() => handleSelection("36-49")}
-                  >
-                    <div
-                      className="option-sub-box"
-                      style={{
-                        backgroundColor: selectedOption == "36-49" && "#580058",
-                        color: selectedOption == "36-49" && "white",
-                      }}
-                    >
-                      C
-                    </div>
-                    <Text>36-49</Text>
-                    <div style={{ width: "20px" }}>
-                      {selectedOption == "36-49" && <CheckIcon />}
-                    </div>
-                  </div>
-                  <div
-                    className="option-box"
-                    onClick={() => handleSelection("50+")}
-                  >
-                    <div
-                      className="option-sub-box"
-                      style={{
-                        backgroundColor: selectedOption == "50+" && "#580058",
-                        color: selectedOption == "50+" && "white",
-                      }}
-                    >
-                      D
-                    </div>
-                    <Text>50+</Text>
-                    <div style={{ width: "20px" }}>
-                      {selectedOption == "50+" && <CheckIcon />}
-                    </div>
-                  </div>
-                </Stack>
+                <Text color={"white"}>Frage 3 von 7</Text>
+                <div>
+                  <Input
+                    style={{
+                      height: "48px",
+                      width: "100%",
+                      fontWeight: "600",
+                      backgroundColor: "black",
+                      color: "white",
+                      border: "0px",
+                      borderBottom: "solid",
+                      padding: "0px",
+                    }}
+                    variant={"thin"}
+                    //   color={"black"}
+                    _placeholder={{
+                      color: "grey",
+                    }}
+                    borderRadius={0}
+                    borderColor={"white.900"}
+                    id={"age"}
+                    //   type={"email"}
+                    placeholder={"DD/MM/YYYY"}
+                    aria-label={"age"}
+                    value={age}
+                    //onKeyDown={handleEnter}
+                    onChange={(e) => setAge(e.target.value)}
+                  />
+                </div>
                 <Button
-                  colorScheme={"purple"}
                   onClick={handleNextStep}
                   style={{ width: "50px" }}
-                  isDisabled={
-                    selectedOption == "unter 21" ||
-                    selectedOption == "21-35" ||
-                    selectedOption == "36-49" ||
-                    selectedOption == "50+"
-                      ? false
-                      : true
-                  }
+                  isDisabled={!validateDate(age)}
                 >
                   OK
                 </Button>
@@ -427,7 +435,7 @@ function Signup() {
                 <Text color={"white"} fontSize={20} fontWeight={700}>
                   {`4 -> Bist du bereits Mitglied in einem anderen Cannabis Verein?*`}
                 </Text>
-                <Text color={"white"}>Frage 4 von 6 (fast geschafft!)</Text>
+                <Text color={"white"}>Frage 4 von 7</Text>
                 <Stack
                   spacing={4}
                   display={"flex"}
@@ -441,7 +449,7 @@ function Signup() {
                     <div
                       className="option-sub-box"
                       style={{
-                        backgroundColor: yesNoSelection == "Nein" && "#580058",
+                        backgroundColor: yesNoSelection == "Nein" && "#2C7A7B",
                         color: yesNoSelection == "Nein" && "white",
                       }}
                     >
@@ -459,7 +467,7 @@ function Signup() {
                     <div
                       className="option-sub-box"
                       style={{
-                        backgroundColor: yesNoSelection == "Ja" && "#580058",
+                        backgroundColor: yesNoSelection == "Ja" && "#2C7A7B",
                         color: yesNoSelection == "Ja" && "white",
                       }}
                     >
@@ -472,7 +480,6 @@ function Signup() {
                   </div>
                 </Stack>
                 <Button
-                  colorScheme={"purple"}
                   onClick={handleNextStep}
                   style={{ width: "50px" }}
                   isDisabled={
@@ -494,9 +501,9 @@ function Signup() {
                 className={`step${steps} ${steps === 5 ? "active" : ""}`}
               >
                 <Text color={"white"} fontSize={20} fontWeight={700}>
-                  {`5 -> Für welchen Standort interessierst du dich?*`}
+                  {`5 -> Wo wohnst Du*`}
                 </Text>
-                <Text color={"white"}>Frage 5 von 6 (Nur noch eine Frage)</Text>
+                <Text color={"white"}>Frage 5 von 7</Text>
                 <div>
                   <Text color={"white"}>Stadt</Text>
                   <Input
@@ -525,7 +532,6 @@ function Signup() {
                   />
                 </div>
                 <Button
-                  colorScheme={"purple"}
                   onClick={handleNextStep}
                   style={{ width: "50px" }}
                   isDisabled={city.trim().length < 1 ? true : false}
@@ -545,9 +551,7 @@ function Signup() {
                 <Text color={"white"} fontSize={20} fontWeight={700}>
                   {`6 -> Wie viel Gramm Cannabis möchtest du monatlich kaufen?*`}
                 </Text>
-                <Text color={"white"}>
-                  Frage 6 von 6 (Du hast es geschafft!)
-                </Text>
+                <Text color={"white"}>Frage 6 von 7</Text>
                 <Stack
                   spacing={4}
                   display={"flex"}
@@ -562,7 +566,7 @@ function Signup() {
                       className="option-sub-box"
                       style={{
                         backgroundColor:
-                          cannabisSelection == "unter 10g" && "#580058",
+                          cannabisSelection == "unter 10g" && "#2C7A7B",
                         color: cannabisSelection == "unter 10g" && "white",
                       }}
                     >
@@ -581,7 +585,7 @@ function Signup() {
                       className="option-sub-box"
                       style={{
                         backgroundColor:
-                          cannabisSelection == "11-20g" && "#580058",
+                          cannabisSelection == "11-20g" && "#2C7A7B",
                         color: cannabisSelection == "11-20g" && "white",
                       }}
                     >
@@ -600,7 +604,7 @@ function Signup() {
                       className="option-sub-box"
                       style={{
                         backgroundColor:
-                          cannabisSelection == "21-30g" && "#580058",
+                          cannabisSelection == "21-30g" && "#2C7A7B",
                         color: cannabisSelection == "21-30g" && "white",
                       }}
                     >
@@ -619,7 +623,7 @@ function Signup() {
                       className="option-sub-box"
                       style={{
                         backgroundColor:
-                          cannabisSelection == "31-40g" && "#580058",
+                          cannabisSelection == "31-40g" && "#2C7A7B",
                         color: cannabisSelection == "31-40g" && "white",
                       }}
                     >
@@ -639,7 +643,7 @@ function Signup() {
                       className="option-sub-box"
                       style={{
                         backgroundColor:
-                          cannabisSelection == "41-50g" && "#580058",
+                          cannabisSelection == "41-50g" && "#2C7A7B",
                         color: cannabisSelection == "41-50g" && "white",
                       }}
                     >
@@ -652,12 +656,8 @@ function Signup() {
                   </div>
                 </Stack>
                 <Button
-                  colorScheme={"purple"}
-                  onClick={() => {
-                    setLoading(true);
-                    handleFinish();
-                  }}
-                  style={{ width: "150px" }}
+                  onClick={handleNextStep}
+                  style={{ width: "50px" }}
                   isDisabled={
                     cannabisSelection == "unter 10g" ||
                     cannabisSelection == "11-20g" ||
@@ -668,11 +668,63 @@ function Signup() {
                       : true
                   }
                 >
-                  Vollständig
+                  OK
                 </Button>
               </Stack>
             )}
             {steps == 7 && (
+              <Stack
+                spacing={4}
+                display={"flex"}
+                flexDir={"column"}
+                width={"100%"}
+                className={`step${steps} ${steps === 3 ? "active" : ""}`}
+              >
+                <Text color={"white"} fontSize={20} fontWeight={700}>
+                  {`3 -> Geben Sie die vollständige Adresse ein.*`}
+                </Text>
+                <Text color={"white"}>Frage 7 von 7</Text>
+                <div>
+                  <Input
+                    style={{
+                      height: "48px",
+                      width: "100%",
+                      fontWeight: "600",
+                      backgroundColor: "black",
+                      color: "white",
+                      border: "0px",
+                      borderBottom: "solid",
+                      padding: "0px",
+                    }}
+                    variant={"thin"}
+                    //   color={"black"}
+                    _placeholder={{
+                      color: "grey",
+                    }}
+                    borderRadius={0}
+                    borderColor={"white.900"}
+                    id={"address"}
+                    //   type={"email"}
+                    placeholder={"Musterstraße 12, 12345 Musterstadt, Deutschland"}
+                    aria-label={"address"}
+                    value={address}
+                    //onKeyDown={handleEnter}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </div>
+                <Button
+                  onClick={() => {
+                    setLoading(true);
+                    handleFinish();
+                  }}
+                  style={{ width: "150px" }}
+                  isDisabled={validateFinish()}
+                >
+                  Vollständig
+                </Button>
+              </Stack>
+            )}
+            {steps == 8 && (
               <Stack
                 spacing={4}
                 display={"flex"}
@@ -686,7 +738,7 @@ function Signup() {
                 </Text>
                 <Text color={"white"}>Deine bewerbung wurde angenommen!</Text>
                 <Link href={"/login"}>
-                  <Button colorScheme={"purple"} style={{ width: "300px" }}>
+                  <Button style={{ width: "300px" }}>
                     JETZT MITGLIED WERDEN
                   </Button>
                 </Link>
@@ -695,7 +747,9 @@ function Signup() {
           </div>
         </Box>
       </Flex>
+      <FloatingButton />
       {/* <Footer /> */}
+      <CannotJoinModal isOpen={isOpen} onClose={onClose} />
       {loading ? <Loader /> : null}
     </>
   );

@@ -72,7 +72,9 @@ function MyDrawer() {
               <Link href="/about-us">
                 <button className="drawer-button">About Us</button>
               </Link>
+              <Link href="/genetics">
               <button className="drawer-button">Our Genetics</button>
+              </Link>
               <Link href="/merch">
                 <button className="drawer-button">Merch</button>
               </Link>

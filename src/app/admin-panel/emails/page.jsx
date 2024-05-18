@@ -4,7 +4,7 @@ import Loader from "@/app/loading";
 import AdminLayout from "@/components/AdminLayout";
 import EmailTemplate from "@/components/emailTemplate";
 import { RepeatIcon } from "@chakra-ui/icons";
-import { Box, HStack, Heading, Img, VStack } from "@chakra-ui/react";
+import { Box, HStack, Heading, Img, Spinner, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -37,7 +37,9 @@ export default function Page() {
   return (
     <AdminLayout>
       {loading ? (
-        <Loader />
+        <div style={{height:'100vh', width:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}>
+          <Spinner />
+        </div>
       ) : emails.length == 0 ? (
         <Box
           style={{
@@ -76,7 +78,7 @@ export default function Page() {
               as="a"
               display="flex"
               alignItems="center"
-              _hover={{ color: "purple.500" }}
+              _hover={{ color: "teal.500" }}
             >
               <RepeatIcon boxSize={8} cursor={"pointer"} />
             </Box>

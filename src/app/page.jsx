@@ -48,6 +48,13 @@ export default function Home() {
   const [isModalShown, setIsModalShown] = useState(true);
   const [isPrivacyModalShown, setIsPrivacyModalShown] = useState(true);
   const [isJoinNowModalShown, setIsJoinNowModalShown] = useState(true);
+  const [pageLoading, setPageLoading] = useState(true);
+
+  useEffect(() => {
+    if (pageLoading) {
+      setPageLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const privacyModalShown = Cookies.get("privayModalShown");
@@ -67,17 +74,14 @@ export default function Home() {
     }
   }, []);
 
-  useEffect(()=>{
+  useEffect(() => {
     const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
     const userID = Cookies.get("cloudClubUserId");
-    if(userID && isAuthenticated){
-      
+    if (userID && isAuthenticated) {
     } else {
-      onJoinNowModalOpen()
+      onJoinNowModalOpen();
     }
-   
-   
-  },[])
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -118,7 +122,7 @@ export default function Home() {
 
   return (
     <>
-    <Header />
+      <Header />
       <div
         style={{
           height: containHeight,
@@ -152,16 +156,15 @@ export default function Home() {
       >
         <About />
       </Stack>
-     <Footer /> 
+      <Footer />
 
-     {isJoinNowModalShown && (
+      {isJoinNowModalShown && (
         <JoinNowModal
           isOpen={isJoinNowModalOpen}
           onClose={onJoinNowModalClose}
         />
       )}
 
-      
       {isModalShown && (
         <AgeModal
           isOpen={isAgeModalOpen}
@@ -178,8 +181,6 @@ export default function Home() {
           onYesClick={() => handleYesClick("privacy")}
         />
       )}
-
-    
     </>
   );
 }

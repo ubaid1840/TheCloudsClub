@@ -7,9 +7,9 @@ function AgeModal({ isOpen, onClose, onYesClick }) {
     <ModalOverlay bg='whiteAlpha.300'
       backdropFilter='blur(10px) hue-rotate(90deg)' />
     <ModalContent style={{ borderRadius: '10px' }} >
-      <ModalBody style={{ backgroundColor: 'black', color: 'white', padding: 30, borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
+      <ModalBody style={{ backgroundColor: 'black', color: 'white', padding: 20, borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Img style={{ height: 120, width: 120, marginTop: 20, marginBottom: 20 }} src='/logo.png' alt='The cloud club logo' />
+          <Img style={{ height: 120, width: 120, }} src='/logo.png' alt='The cloud club logo' />
           <div style={{ fontSize: '24px', fontWeight: 'bold', margin: 10 }}>
             SIND SIE 21 ODER ÄLTER?
           </div>
@@ -19,6 +19,7 @@ function AgeModal({ isOpen, onClose, onYesClick }) {
           <div style={{ textAlign: 'center', display: 'flex', fontWeight: '500', fontSize: '16px', marginTop: 10, marginBottom: 10 }}>
             Diese Website sammelt Cookies, um ein besseres Benutzererlebnis zu bieten. Wir sammeln Cookies, um den Datenverkehr und die Leistung unserer Website zu analysieren. Wir sammeln niemals personenbezogene Daten und sorgen dafür, dass Sie ein tolles Einkaufserlebnis haben.
           </div>
+          <Img style={{ height: 50, width: 50, marginTop: 10, marginBottom: 10 }} src='/age-modal.png' alt='Age warning' />
         </div>
 
 

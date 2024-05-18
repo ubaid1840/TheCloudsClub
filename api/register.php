@@ -40,40 +40,49 @@ $age = isset($data['age']) ? $data['age'] : '';
 $alreadyMember = isset($data['alreadyMember']) ? $data['alreadyMember'] : '';
 $city = isset($data['city']) ? $data['city'] : '';
 $requiredCannabis = isset($data['requiredCannabis']) ? $data['requiredCannabis'] : '';
+$address = isset($data['address']) ? $data['address'] : ''; // Corrected typo from 'adress' to 'address'
 $password = isset($data['password']) ? $data['password'] : '';
 $profilePicture = ''; // Default empty string for profile picture
 
 // Validate required fields
-if (empty($email) || empty($name) || empty($password)) {
+if (empty($email) || empty($name) || empty($password) || empty($age) || empty($alreadyMember) || empty($city) || empty($requiredCannabis) || empty($address)) {
     http_response_code(400);
-    echo json_encode(array("error" => "Please provide email, name, and password"));
+    echo json_encode(array("error" => "Please provide all required fields"));
     exit();
 }
 
 // Hash the password
 $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-// Insert user data into database using prepared statement
-$sql = "INSERT INTO users (email, name, age, alreadyMember, city, requiredCannabis, password, profile_picture) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+try {
+    // Insert user data into database using prepared statement
+    $sql = "INSERT INTO users (email, name, age, alreadyMember, city, requiredCannabis, address, password, profile_picture) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ssssssss", $email, $name, $age, $alreadyMember, $city, $requiredCannabis, $passwordHash, $profilePicture);
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception($conn->error, $conn->errno);
+    }
+    
+    $stmt->bind_param("sssssssss", $email, $name, $age, $alreadyMember, $city, $requiredCannabis, $address, $passwordHash, $profilePicture);
 
-if ($stmt->execute()) {
+    if (!$stmt->execute()) {
+        throw new Exception($stmt->error, $stmt->errno);
+    }
+
     http_response_code(200);
     echo json_encode(array("message" => "User registered successfully"));
-} else {
-    // Check for duplicate entry error (error code 1062 for MySQL)
-    if ($stmt->errno === 1062) {
+    
+    $stmt->close();
+    $conn->close();
+} catch (Exception $e) {
+    // Handle specific error codes
+    if ($e->getCode() === 1062) {
         http_response_code(400);
         echo json_encode(array("error" => "Email address already exists"));
     } else {
         http_response_code(500);
-        echo json_encode(array("error" => "Error registering user: " . $stmt->error));
+        echo json_encode(array("error" => "Error registering user: " . $e->getMessage()));
     }
 }
-
-$stmt->close();
-$conn->close();
 ?>

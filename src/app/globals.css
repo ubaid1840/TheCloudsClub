@@ -212,7 +212,7 @@ input {
 }
 
 .option-box:hover {
-  background-color: #af89af;
+  background-color: #4FD1C5;
   cursor: pointer;
 }
 
@@ -251,3 +251,17 @@ input {
 *:focus {
   outline: none;
 }
+
+
+/* FloatingButton.css */
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  display: flex;
+}
+

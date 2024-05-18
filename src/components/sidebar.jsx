@@ -81,11 +81,14 @@ const SidebarContent = ({ onClose, ...rest }) => {
       {...rest}
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" paddingTop={'20px'} paddingBottom={'20px'}>
+        <Link href="/">
         <Img
+        
           style={{ width: "100px" }}
           src="/logo.png"
           alt="The cloud club logo"
         />
+        </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
       <Divider orientation="horizontal"/>
@@ -121,7 +124,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
         bg={pathname == path && "#4B535C"}
         color={pathname == path && "white" }
         _hover={{
-          bg: useColorModeValue('purple.500', 'purple.500'),
+          bg: useColorModeValue('teal.400', 'teal.400'),
           color: "white",
         }}
         {...rest}

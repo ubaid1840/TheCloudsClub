@@ -5,7 +5,7 @@ import AdminLayout from "@/components/AdminLayout";
 import EmailTemplate from "@/components/emailTemplate";
 import MyTable from "@/components/table";
 import { RepeatIcon } from "@chakra-ui/icons";
-import { Box, HStack, Heading, Img, VStack } from "@chakra-ui/react";
+import { Box, HStack, Heading, Img, Spinner, VStack } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -38,7 +38,9 @@ export default function Page() {
   return (
     <AdminLayout>
       {loading ? (
-        <Loader />
+          <div style={{height:'100vh', width:'100%', display:'flex', alignItems:'center', justifyContent:'center'}}>
+          <Spinner />
+        </div>
       ) : (
         <Box
           width={"100%"}

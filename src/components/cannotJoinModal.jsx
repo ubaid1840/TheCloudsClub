@@ -15,13 +15,13 @@ import {
 import Link from "next/link";
 import React from "react";
 
-function JoinNowModal({ isOpen, onClose }) {
+function CannotJoinModal({ isOpen, onClose }) {
   return (
     <Modal
       isOpen={isOpen}
-      onClose={onClose}
       size={{ base: "sm", md: "md", lg: "md" }}
       closeOnOverlayClick={false}
+      onClose={onClose}
     >
       <ModalOverlay />
 
@@ -54,7 +54,6 @@ function JoinNowModal({ isOpen, onClose }) {
                 right: 20,
               }}
             >
-              <CloseIcon onClick={onClose} />
             </div>
             <div
               style={{
@@ -71,7 +70,7 @@ function JoinNowModal({ isOpen, onClose }) {
                   textAlign: "center",
                 }}
               >
-                Treten Sie dem inneren Kreis bei
+                Entschuldigung
               </Heading>
               <Img
                 style={{
@@ -88,21 +87,20 @@ function JoinNowModal({ isOpen, onClose }) {
                   fontSize: "16px",
                 }}
               >
-                Seien Sie der Erste, der von The CloudClub erfährt
+                Sie können dem Club nicht beitreten
               </Text>
-              <Link href="/join-signup">
+              
                 <Button
-                  onClick={() => {}}
-                 
+                onClick={onClose}
                   style={{
                     marginTop: "40px",
                     width: "200px",
                     marginBottom: 20,
                   }}
                 >
-                  Join Now
+                  Close
                 </Button>
-              </Link>
+             
             </div>
           </Box>
         </ModalBody>
@@ -141,4 +139,4 @@ function JoinNowModal({ isOpen, onClose }) {
   );
 }
 
-export default JoinNowModal;
+export default CannotJoinModal;
