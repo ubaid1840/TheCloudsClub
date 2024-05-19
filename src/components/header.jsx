@@ -1,5 +1,5 @@
 import Link from "next/link";
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useContext, useEffect, useState } from "react";
 import MyDrawer from "./myDrawer";
 import { usePathname, useRouter } from "next/navigation";
 import axios from "axios";
@@ -12,11 +12,13 @@ import {
   MenuItem,
   MenuList,
 } from "@chakra-ui/react";
+import { AuthContext } from "@/store/context/AuthContext";
 
 function Header() {
   const pathName = usePathname();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState();
+  const {state : authState, setAuth} = useContext(AuthContext)
   const router = useRouter();
 
   useEffect(() => {
@@ -35,6 +37,7 @@ function Header() {
           .then((response) => {
             if(response?.data?.info?.id){
               setUserInfo(response?.data?.info);
+              setAuth(response?.data?.info)
             }
           })
           .catch((error) => {
@@ -52,11 +55,11 @@ function Header() {
         Cookies.remove("cloudClubAuthToken");
         Cookies.remove("cloudClubUserId");
         setUserInfo();
-        router.refresh();
+        setAuth()
+        router.replace('/');
       }
     } catch (error) {
       console.error("Logout error:", error);
-      // Handle network or other errors
     }
   }
 
@@ -88,7 +91,8 @@ function Header() {
       <div>
         {userInfo ? (
           <Menu>
-            <MenuButton
+            <MenuButton color='white' mr={5}>Hi {authState?.value?.data?.name}!</MenuButton>
+            {/* <MenuButton
               as={IconButton}
               aria-label="Options"
               icon={
@@ -99,7 +103,7 @@ function Header() {
                 />
               }
               variant="unstyled"
-            />
+            /> */}
             <MenuList style={{ marginRight: "10px" }}>
             <Link href={'/profile'}><MenuItem >Profile</MenuItem></Link>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>

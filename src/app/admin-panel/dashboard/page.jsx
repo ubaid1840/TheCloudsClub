@@ -132,7 +132,7 @@ export default function Page() {
                     style={{ fontWeight: "900", fontSize: 34,  }}
                     letterSpacing={2}
                   >
-                    {totalUsers}
+                    {totalUsers-1}
                   </Text>
                   <div
                     fontSize={18}
@@ -167,7 +167,7 @@ export default function Page() {
                 <RepeatIcon
                   color={"white"}
                   style={{ cursor: "pointer" }}
-                  _hover={{ color: "black" }}
+                  _hover={{ color: "teal.400" }}
                   onClick={() => {
                     setLoading(true);
                     fetchAllUsers();

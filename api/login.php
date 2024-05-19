@@ -1,20 +1,20 @@
 <?php
-
-
+// Allow cross-origin requests (CORS) - You may adjust this as needed
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// Check request method
+// Check request method for preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    // Handle preflight OPTIONS request
     http_response_code(200);
     exit();
 }
 
+// Start session and include database configuration
 session_start();
 include 'config.php';
 
+// Read incoming JSON data from the request body
 $jsonData = file_get_contents('php://input');
 
 // Check if JSON data was received
@@ -34,7 +34,7 @@ if (json_last_error() !== JSON_ERROR_NONE) {
     exit();
 }
 
-
+// Extract data from the decoded JSON array
 $email = isset($data['email']) ? $data['email'] : '';
 $password = isset($data['password']) ? $data['password'] : '';
 
@@ -45,21 +45,37 @@ if (empty($email) || empty($password)) {
     exit();
 }
 
-// Retrieve user from database
-$sql = "SELECT * FROM users WHERE email = '$email'";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $user = $result->fetch_assoc();
-    if (password_verify($password, $user['password'])) {
-        $_SESSION['user_id'] = $user['id'];
-        echo json_encode(array("message" => "Login successful",  "id" => $user['id']));
-    } else {
-        echo json_encode(array("error" => "Invalid password"));
+try {
+    // Retrieve user from database using prepared statement
+    $sql = "SELECT * FROM users WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        throw new Exception($conn->error, $conn->errno);
     }
-} else {
-    echo json_encode(array("error" => "User not found"));
+    
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        if (password_verify($password, $user['password'])) {
+            $_SESSION['user_id'] = $user['id'];
+            http_response_code(200);
+            echo json_encode(array("message" => "Login successful", "id" => $user['id']));
+        } else {
+            http_response_code(401);
+            echo json_encode(array("error" => "Invalid password"));
+        }
+    } else {
+        http_response_code(404);
+        echo json_encode(array("error" => "User not found"));
+    }
+    
+    $stmt->close();
+    $conn->close();
+} catch (Exception $e) {
+    http_response_code(500);
+    echo json_encode(array("error" => "Error logging in: " . $e->getMessage()));
 }
-
-$conn->close();
 ?>

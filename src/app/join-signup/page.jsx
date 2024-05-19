@@ -116,7 +116,7 @@ function Signup() {
     };
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/register.php`,
         formData,
         {
@@ -125,17 +125,22 @@ function Signup() {
             "Content-Type": "application/json", // Set content type to JSON
           },
         }
-      );
-      addToast({ message: "Welcome to the club", type: "success" });
-      setProgress(progress + 15);
-      setSteps((prevState) => {
-        const newState = prevState + 1;
-        return newState;
-      });
+      ).then(()=>{
+        addToast({ message: "Welcome to the club", type: "success" });
+        setProgress(progress + 15);
+        setSteps((prevState) => {
+          const newState = prevState + 1;
+          return newState;
+        });
+      })
       
     } catch (error) {
-      console.log(error.response.data.error)
-      addToast({ message: error.response.data.error, type: "error" });
+      if(error?.response?.data?.error){
+        addToast({ message: error.response.data.error, type: "error" });
+      } else {
+     
+        addToast({ message: error.message, type: "error" });
+      }
     } finally {
       setLoading(false);
     }

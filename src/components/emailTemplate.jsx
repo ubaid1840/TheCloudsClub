@@ -29,7 +29,7 @@ export default function EmailTemplate({ data }) {
               <h2>
                 <AccordionButton
                   _expanded={{
-                    bg: "purple.500",
+                    bg: "teal.600",
                     color: "white",
                     borderBottomRadius: "0px",
                   }}

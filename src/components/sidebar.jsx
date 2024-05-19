@@ -7,7 +7,6 @@ import {
   Flex,
   Icon,
   useColorModeValue,
-  Link,
   Drawer,
   DrawerContent,
   Text,
@@ -27,6 +26,7 @@ import {
   FiMail,
 } from "react-icons/fi";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 const LinkItems = [
   { name: "Dashboard", icon: FiHome, path : '/admin-panel/dashboard/' },

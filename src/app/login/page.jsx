@@ -51,7 +51,7 @@ function Page() {
       'password' : password
     }
     try {
-      const response = await axios.post(
+      await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/login.php`,
         formData,
         {
@@ -60,27 +60,25 @@ function Page() {
             "Content-Type": "application/json",
           },
         }
-      );
-      console.log(response)
-      if(response?.data?.message){
-        if(response.data.message == 'Login successful'){
-          Cookies.set('cloudClubAuthToken', 'true', { expires: 365 }); // Expires in 1 year
-          Cookies.set('cloudClubUserId', response?.data?.id, { expires: 365 });
-          addToast({message: "Login Successful", type: "success"})
-          if(response?.data?.id == 1){
-            router.replace('/admin-panel')
-          } else {
-            router.replace('/')
-          }
-        }
-      }
-      else {
-        addToast({message: "Unexpected response format", type: "error"})
+      ).then((response)=>{
+        Cookies.set('cloudClubAuthToken', 'true', { expires: 365 }); // Expires in 1 year
+            Cookies.set('cloudClubUserId', response?.data?.id, { expires: 365 });
+            addToast({message: "Login Successful", type: "success"})
+            if(response?.data?.id == 1){
+              router.replace('/admin-panel')
+            } else {
+              router.replace('/')
+            }
+      })
+      
+    } catch (error) {
+      if(error?.response?.data?.error){
+        addToast({ message: error.response.data.error, type: "error" });
+      } else {
+     
+        addToast({ message: error.message, type: "error" });
       }
      
-    } catch (error) {
-      console.log(error)
-      addToast({message: "Login error", type: "error"})
      
     } finally {
       setLoading(false);
@@ -101,7 +99,7 @@ function Page() {
         paddingTop={{ base: "120px", md: "160px", lg: "160px" }}
         paddingBottom={{ base: "20px", md: "120px", lg: "120px" }}
       >
-       {pageLoading ? <Spinner /> : null} 
+       {pageLoading ? <Spinner /> :  
         <Box
           bg={"transparent"}
           display={"flex"}
@@ -223,13 +221,13 @@ function Page() {
                 setLoading(true)
                 handleLogin()
               }}
-              className="btn"
               style={{ width: "400px", borderWidth: "0px", width: "100%" }}
             >
               Login
             </Button>
           </Stack>
         </Box>
+}
       </Flex>
       <Footer />
       {loading ? <Loader /> : null}

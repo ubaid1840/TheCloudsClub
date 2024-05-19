@@ -6,6 +6,7 @@ import './globals.css'
 import Header from '@/components/header'
 import { useEffect, useState } from 'react'
 import Loader from './loading'
+import AuthContextProvider from '@/store/context/AuthContext'
 
 
 export function Providers(props) {
@@ -22,8 +23,10 @@ export function Providers(props) {
 
   return (
     <ChakraProvider theme={theme}>
-      {!visible ? <Loader /> :
-        children}
+      <AuthContextProvider>
+        {!visible ? <Loader /> :
+          children}
+      </AuthContextProvider>
     </ChakraProvider>
   )
 
