@@ -7,7 +7,7 @@ import '@fontsource/source-code-pro'
 
 // 2. Add your color mode config
 const config = {
-  initialColorMode: 'dark',
+  initialColorMode: 'light',
   fonts : {
     heading: `'Oswald', sans-serif`,
     body: `'Source Code Pro', monospace`,
@@ -20,7 +20,8 @@ const theme = extendTheme({
     heading : 'Oswald',
     body : 'Source Code Pro'
   },
-  initialColorMode: 'dark',
+  initialColorMode: 'light',
+  useSystemColorMode: false,
   components: {
     Button : {
       defaultProps: {

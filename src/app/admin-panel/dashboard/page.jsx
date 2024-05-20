@@ -55,6 +55,7 @@ export default function Page() {
           paddingTop={"20px"}
           justifyContent={"center"}
           display={"flex"}
+          bg={'gray.100'}
         >
           {/* <Box
             width={"300px"}

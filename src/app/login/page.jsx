@@ -9,7 +9,6 @@ import {
   Text,
   Button,
   Input,
-  useColorModeValue,
   Box,
   Flex,
   Spinner,
@@ -165,7 +164,7 @@ function Page() {
                 color: "grey",
               }}
               borderRadius={0}
-              borderColor={useColorModeValue("white.900", "white.900")}
+              borderColor={"white.900"}
               id={"email"}
               type={"email"}
               placeholder={"Email"}
@@ -192,7 +191,7 @@ function Page() {
                 color: "gray",
               }}
               borderRadius={0}
-              borderColor={useColorModeValue("white.900", "white.900")}
+              borderColor={"white.900"}
               id={"password"}
               type={"password"}
               placeholder={"Password"}

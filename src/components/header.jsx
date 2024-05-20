@@ -16,9 +16,8 @@ import { AuthContext } from "@/store/context/AuthContext";
 
 function Header() {
   const pathName = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState();
-  const {state : authState, setAuth} = useContext(AuthContext)
+  const { state: authState, setAuth } = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
@@ -35,9 +34,9 @@ function Header() {
             }
           )
           .then((response) => {
-            if(response?.data?.info?.id){
+            if (response?.data?.info?.id) {
               setUserInfo(response?.data?.info);
-              setAuth(response?.data?.info)
+              setAuth(response?.data?.info);
             }
           })
           .catch((error) => {
@@ -55,8 +54,8 @@ function Header() {
         Cookies.remove("cloudClubAuthToken");
         Cookies.remove("cloudClubUserId");
         setUserInfo();
-        setAuth()
-        router.replace('/');
+        setAuth();
+        router.replace("/");
       }
     } catch (error) {
       console.error("Logout error:", error);
@@ -75,42 +74,54 @@ function Header() {
         height: "40px",
         zIndex: 2,
         alignItems: "center",
+        paddingLeft:'10px',
+        paddingRight:'20px'
+
       }}
     >
       <MyDrawer />
 
       <div>
-        {pathName === "/" ? (
+        {pathName == '/join-signup/' ? null : userInfo ? null : (
+          <Link href="/join-signup">
+            <div className="link">Join Now</div>
+          </Link>
+        )}
+      </div>
+
+      <div>
+        {
           !userInfo ? (
             <Link href="/login">
               <div className="link">Login</div>
             </Link>
-          ) : null
-        ) : null}
+          ) : (
+            <Menu>
+              <MenuButton color="white">
+                Hi {authState?.value?.data?.name}!
+              </MenuButton>
+              {/* <MenuButton
+            as={IconButton}
+            aria-label="Options"
+            icon={
+              <Avatar
+                style={{ marginRight: 10, marginTop: 5 }}
+                size="sm"
+                src="https://bit.ly/broken-link"
+              />
+            }
+            variant="unstyled"
+          /> */}
+              <MenuList style={{ marginRight: "10px" }}>
+                <Link href={"/profile"}>
+                  <MenuItem>Profile</MenuItem>
+                </Link>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
+              </MenuList>
+            </Menu>  
+        ) }
       </div>
-      <div>
-        {userInfo ? (
-          <Menu>
-            <MenuButton color='white' mr={5}>Hi {authState?.value?.data?.name}!</MenuButton>
-            {/* <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={
-                <Avatar
-                  style={{ marginRight: 10, marginTop: 5 }}
-                  size="sm"
-                  src="https://bit.ly/broken-link"
-                />
-              }
-              variant="unstyled"
-            /> */}
-            <MenuList style={{ marginRight: "10px" }}>
-            <Link href={'/profile'}><MenuItem >Profile</MenuItem></Link>
-              <MenuItem onClick={handleLogout}>Logout</MenuItem>
-            </MenuList>
-          </Menu>
-        ) : null}
-      </div>
+
       {/* <div>
         {userInfo ? (
           <div style={{ color: "white", marginRight: 20 }}>{userInfo.name}</div>

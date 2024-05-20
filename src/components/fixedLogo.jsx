@@ -19,8 +19,8 @@ export default function FixedLogo () {
         }}
       >
         <Img
-          style={{ width: "100px" }}
-          src="/logo.png"
+          style={{ width: "90px" }}
+          src="/logo2.png"
           alt="The cloud club logo"
         />
       </div>

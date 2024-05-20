@@ -23,9 +23,9 @@ export default function Page() {
           withCredentials: false,
         })
         .then((response) => {
-          if (response.status == 200) {
+          if (Array.isArray(response.data)) {
             setEmails(response.data);
-          }
+          } 
         });
     } catch (error) {
       console.log(error);
@@ -46,8 +46,9 @@ export default function Page() {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            marginTop: "40px",
+            paddingTop: "40px",
           }}
+          bg={'gray.100'}
         >
           <Heading color={"#323232"}>No new emails!!!</Heading>
         </Box>

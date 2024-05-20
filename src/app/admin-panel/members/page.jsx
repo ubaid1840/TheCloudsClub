@@ -68,6 +68,7 @@ export default function Page() {
             width: "100%",
             display: "flex",
             flexDirection: "column",
+            backgroundColor: "white"
           }}
         >
           <Heading

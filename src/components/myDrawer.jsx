@@ -33,7 +33,7 @@ function MyDrawer() {
   return (
     <>
       <GiHamburgerMenu
-        style={{ cursor: "pointer", marginLeft: "10px" }}
+        style={{ cursor: "pointer" }}
         color="white"
         size="26px"
         onClick={onOpen}
@@ -54,7 +54,7 @@ function MyDrawer() {
                 height: 120,
                 width: 120,
               }}
-              src="/logo.png"
+              src="/logo2.png"
               alt="The cloud club logo"
             />
           </DrawerHeader>

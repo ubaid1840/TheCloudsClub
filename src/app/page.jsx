@@ -12,6 +12,7 @@ import {
   ModalFooter,
   ModalBody,
   Spinner,
+  Box,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
@@ -60,70 +61,76 @@ export default function Home() {
     const privacyModalShown = Cookies.get("privayModalShown");
     if (!privacyModalShown) {
       onPrivacyModalOpen();
-    } else {
-      setIsPrivacyModalShown(false);
-    }
+    } 
   }, []);
 
   useEffect(() => {
     const modalShown = Cookies.get("modalShown");
     if (!modalShown) {
       onAgeModalOpen();
-    } else {
-      setIsModalShown(false);
-    }
+    } 
   }, []);
+
+  // useEffect(()=>{
+  //   Cookies.remove("cloudClubAuthToken")
+  //   Cookies.remove("cloudClubUserId")
+
+  //   Cookies.remove("privayModalShown")
+  //   Cookies.remove("modalShown")
+
+  // },[])
 
   useEffect(() => {
     const isAuthenticated = Cookies.get("cloudClubAuthToken") === "true";
     const userID = Cookies.get("cloudClubUserId");
     if (userID && isAuthenticated) {
     } else {
-      onJoinNowModalOpen();
+      setTimeout(()=>{
+        onJoinNowModalOpen();
+      },30000)
+     
     }
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const position = window.scrollY;
-      const minHeight = 80;
-      const minWidth = 100;
-      const newHeight = Math.max(minHeight, 1000 - position * 6);
-      const newWidth = Math.max(minWidth, 1000 - position * 6);
-      setContainerHeight(`${newHeight}px`);
-      setStackMargin(`${newHeight + 220}px`);
-      setImgWidth(`${newWidth}px`);
-    };
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     const position = window.scrollY;
+  //     const minHeight = 80;
+  //     const minWidth = 100;
+  //     const newHeight = Math.max(minHeight, 1000 - position * 6);
+  //     const newWidth = Math.max(minWidth, 1000 - position * 6);
+  //     setContainerHeight(`${newHeight}px`);
+  //     setStackMargin(`${newHeight + 220}px`);
+  //     setImgWidth(`${newWidth}px`);
+  //   };
 
-    // Attach scroll event listener
-    window.addEventListener("scroll", handleScroll);
+  //   // Attach scroll event listener
+  //   window.addEventListener("scroll", handleScroll);
 
-    // Clean up: Remove scroll event listener on component unmount
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  //   // Clean up: Remove scroll event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, []);
 
   const handleYesClick = (val) => {
     if (val == "age") {
       Cookies.set("modalShown", "true", { expires: 1 });
-      setIsModalShown(false);
       onAgeModalClose();
     } else {
       Cookies.set("privayModalShown", "true", { expires: 1 });
-      setIsPrivacyModalShown(false);
       onPrivacyModalClose();
     }
   };
 
   const handleNoClick = () => {
-    setIsPrivacyModalShown(false);
+    onPrivacyModalClose()
   };
 
   return (
-    <>
+    <div style={{ width: "100%", backgroundColor: "black" }}>
       <Header />
-      <div
+      {/* <div
         style={{
           height: containHeight,
           maxHeight: "100vh",
@@ -141,7 +148,24 @@ export default function Home() {
           src="/logo.png"
           alt="The cloud club logo"
         />
-      </div>
+      </div> */}
+      <Box
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          backgroundColor: "black",
+          width: "100%",
+          border: "0px",
+        }}
+        alignItems="center"
+        height={{ base: "300px", lg: "100vh" }}
+      >
+        <Img
+          style={{ maxWidth: "40%", width: "1000px" }}
+          src="/hero.png"
+          alt="The cloud club logo"
+        />
+      </Box>
       <Stack
         style={{
           width: "100vw",
@@ -149,7 +173,7 @@ export default function Home() {
           backgroundColor: "black",
           alignItems: "center",
           gap: 0,
-          paddingTop: stackMargin,
+          paddingTop: "40px",
           paddingRight: "10px",
           paddingLeft: "10px",
         }}
@@ -158,29 +182,19 @@ export default function Home() {
       </Stack>
       <Footer />
 
-      {isJoinNowModalShown && (
-        <JoinNowModal
-          isOpen={isJoinNowModalOpen}
-          onClose={onJoinNowModalClose}
-        />
-      )}
+      <JoinNowModal isOpen={isJoinNowModalOpen} onClose={onJoinNowModalClose} />
 
-      {isModalShown && (
-        <AgeModal
-          isOpen={isAgeModalOpen}
-          onClose={onAgeModalClose}
-          onYesClick={() => handleYesClick("age")}
-        />
-      )}
-
-      {isPrivacyModalShown && (
-        <PrivacyModal
-          onNoClick={handleNoClick}
-          isOpen={isPrivacyModalOpen}
-          onClose={onPrivacyModalClose}
-          onYesClick={() => handleYesClick("privacy")}
-        />
-      )}
-    </>
+      <AgeModal
+        isOpen={isAgeModalOpen}
+        onClose={onAgeModalClose}
+        onYesClick={() => handleYesClick("age")}
+      />
+      <PrivacyModal
+        onNoClick={handleNoClick}
+        isOpen={isPrivacyModalOpen}
+        onClose={onPrivacyModalClose}
+        onYesClick={() => handleYesClick("privacy")}
+      />
+    </div>
   );
 }

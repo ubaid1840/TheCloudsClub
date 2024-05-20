@@ -80,18 +80,18 @@ const SidebarContent = ({ onClose, ...rest }) => {
       zIndex={2}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" paddingTop={'20px'} paddingBottom={'20px'}>
+      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between" paddingTop={'20px'} paddingBottom={'30px'}>
         <Link href="/">
         <Img
         
           style={{ width: "100px" }}
-          src="/logo.png"
+          src="/logo2.png"
           alt="The cloud club logo"
         />
         </Link>
         <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       </Flex>
-      <Divider orientation="horizontal"/>
+      <Divider orientation="horizontal" my={'10px'}/>
       {LinkItems.map((link) => (
         <NavItem key={link.name} icon={link.icon} path={link.path}>
           {link.name}

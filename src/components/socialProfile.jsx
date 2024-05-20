@@ -21,7 +21,7 @@ export default function SocialProfileSimple({ data }) {
       <Box
         maxW={"320px"}
         w={"full"}
-        bg={useColorModeValue("white", "gray.900")}
+        bg={'white'}
         boxShadow={"2xl"}
         rounded={"lg"}
         p={6}
@@ -53,14 +53,14 @@ export default function SocialProfileSimple({ data }) {
         </Text>
         <Text
           textAlign={"center"}
-          color={useColorModeValue("gray.700", "gray.400")}
+          color={'gray.700'}
           px={3}
         >
           {data?.id == "1" ? "Admin" : `Member ID: ${data?.id}`}
         </Text>
         <Text
           textAlign={"center"}
-          color={useColorModeValue("gray.700", "gray.400")}
+          color={"gray.700"}
           px={3}
         >
           {data?.address}
@@ -73,7 +73,7 @@ export default function SocialProfileSimple({ data }) {
           <Badge
             px={2}
             py={1}
-            bg={useColorModeValue("gray.50", "gray.800")}
+            bg={"gray.50"}
             fontWeight={"400"}
           >
             {`#${data?.city}`}
@@ -81,7 +81,7 @@ export default function SocialProfileSimple({ data }) {
           <Badge
             px={2}
             py={1}
-            bg={useColorModeValue("gray.50", "gray.800")}
+            bg={"gray.50"}
             fontWeight={"400"}
           >
             {`#${data?.age}`}
@@ -89,7 +89,7 @@ export default function SocialProfileSimple({ data }) {
           <Badge
             px={2}
             py={1}
-            bg={useColorModeValue("gray.50", "gray.800")}
+            bg={"gray.50"}
             fontWeight={"400"}
           >
             {`#${data?.requiredCannabis}`}

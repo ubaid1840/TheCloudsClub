@@ -16,6 +16,7 @@ import {
 import { FaHome } from "react-icons/fa";
 
 export default function EmailTemplate({ data }) {
+  if(data.length > 0)
   return (
     <div
       style={{
