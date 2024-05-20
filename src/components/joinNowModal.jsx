@@ -75,10 +75,11 @@ function JoinNowModal({ isOpen, onClose }) {
               </Heading>
               <Img
                 style={{
-                  height: 120,
-                  width: 120,
+                  height: 170,
+                  width: 170,
+                  marginBottom:'20px'
                 }}
-                src="/logo.png"
+                src="/logo3.png"
                 alt="The cloud club logo"
               />
               <Text

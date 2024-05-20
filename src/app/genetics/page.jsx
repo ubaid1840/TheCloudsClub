@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   Box,
   Flex,
+  Heading,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -35,6 +36,7 @@ function Page() {
         paddingTop={{ base: "120px", md: "160px", lg: "160px" }}
         paddingBottom={{ base: "20px", md: "120px", lg: "120px" }}
       >
+
         <Box
           bg={"transparent"}
           display={"flex"}
@@ -43,7 +45,10 @@ function Page() {
         
           width={{ base: "95%", sm: "70%", md: "70%" }}
         >
-        <Img width={'100%'} src="/genetics-hero.jpg"/>
+          <Text color={'white'} fontSize={'50px'} mb={20}>Our Breeder Genetics</Text>
+        <Img width={'80%'} src="/genetics-hero.jpg"/>
+        <Text color={'white'} fontSize={'50px'} mt={{base : 10, lg : 40}}>Our Genetics</Text>
+        <Img width={'80%'} src="/breed.jpeg"/>
         </Box>
       </Flex>
       <Footer />

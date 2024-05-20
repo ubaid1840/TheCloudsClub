@@ -41,14 +41,14 @@ export default function Footer() {
         {isLargerThan500 ? (
           <Img
             style={{ height: 160, width: 160,  }}
-            src="/logo.png"
+            src="/logo2.png"
             alt="The cloud club logo"
           />
         ) : null}
 
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <Text className="footer-heading">Get in touch</Text>
-          <Text className="footer-subheading">a: The CloudClub68</Text>
+          <Text className="footer-subheading">a: The CloudClub</Text>
           <Text className="footer-subheading" wordBreak={'break-word'}>e: support@thecloudclub.cc</Text>
         </VStack>
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>

@@ -13,6 +13,7 @@ import {
   MenuList,
 } from "@chakra-ui/react";
 import { AuthContext } from "@/store/context/AuthContext";
+import { FaUser } from "react-icons/fa";
 
 function Header() {
   const pathName = usePathname();
@@ -93,7 +94,8 @@ function Header() {
         {
           !userInfo ? (
             <Link href="/login">
-              <div className="link">Login</div>
+              <FaUser size={24} color="white"/>
+              {/* <div className="link">Login</div> */}
             </Link>
           ) : (
             <Menu>
