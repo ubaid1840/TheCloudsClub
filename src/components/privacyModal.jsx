@@ -46,7 +46,7 @@ function PrivacyModal({ isOpen, onClose, onYesClick, onNoClick }) {
                 marginTop: 20,
                 marginBottom: 20,
               }}
-              src="/logo.png"
+              src="/logo2.png"
               alt="The cloud club logo"
             />
             <Text style={{ fontSize: "24px", fontWeight: "bold", margin: 10 }}>

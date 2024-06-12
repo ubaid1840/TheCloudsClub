@@ -8,7 +8,7 @@ import Loader from "./loading";
 
 
 export const metadata = {
-  title: "The Clouds Club",
+  title: "The CloudClub",
   description: "Bringing Cannabis culture to Germany",
 };
 

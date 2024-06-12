@@ -36,19 +36,21 @@ function Page() {
         paddingTop={{ base: "120px", md: "160px", lg: "160px" }}
         paddingBottom={{ base: "20px", md: "120px", lg: "120px" }}
       >
-
         <Box
           bg={"transparent"}
           display={"flex"}
           flexDir={"column"}
-          alignItems={'center'}
-        
+          alignItems={"center"}
           width={{ base: "95%", sm: "70%", md: "70%" }}
         >
-          <Text color={'white'} fontSize={'50px'} mb={20}>Our Breeder Genetics</Text>
-        <Img width={'80%'} src="/genetics-hero.jpg"/>
-        <Text color={'white'} fontSize={'50px'} mt={{base : 10, lg : 40}}>Our Genetics</Text>
-        <Img width={'80%'} src="/breed.jpeg"/>
+          <Text color={"white"} fontSize={"50px"} mb={20}>
+            Our Breeder Genetics
+          </Text>
+          <Img width={"80%"} src="/genetics-hero-2.jpg" />
+          <Text color={"white"} fontSize={"50px"} mt={{ base: 10, lg: 40 }}>
+            Our Genetics
+          </Text>
+          <Img width={"80%"} src="/breed.jpeg" />
         </Box>
       </Flex>
       <Footer />

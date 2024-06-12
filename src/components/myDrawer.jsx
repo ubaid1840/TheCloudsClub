@@ -78,9 +78,6 @@ function MyDrawer() {
               <Link href="/merch">
                 <button className="drawer-button">Merch</button>
               </Link>
-              <Link href="/privacy-policy">
-                <button className="drawer-button">Privacy Policy</button>
-              </Link>
             </VStack>
           </DrawerBody>
 

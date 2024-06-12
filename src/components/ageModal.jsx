@@ -9,7 +9,7 @@ function AgeModal({ isOpen, onClose, onYesClick }) {
     <ModalContent style={{ borderRadius: '10px' }} >
       <ModalBody style={{ backgroundColor: 'black', color: 'white', padding: 20, borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
         <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-          <Img style={{ height: 120, width: 120, }} src='/logo.png' alt='The cloud club logo' />
+          <Img style={{ height: 120, width: 120, }} src='/logo2.png' alt='The cloud club logo' />
           <div style={{ fontSize: '24px', fontWeight: 'bold', margin: 10 }}>
             SIND SIE 21 ODER ÄLTER?
           </div>

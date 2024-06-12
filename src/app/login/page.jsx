@@ -199,7 +199,7 @@ function Page() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-            {/* <Link href="/forgetpassword" style={{ alignSelf: "flex-end" }}>
+            <Link href="/forgetpassword" style={{ alignSelf: "flex-end" }}>
               <Button
                 variant="link"
                 className="footer-subheading"
@@ -207,7 +207,7 @@ function Page() {
               >
                 Forget Password
               </Button>
-            </Link> */}
+            </Link>
             <Button
               isDisabled={
                 email.includes("@") &&

@@ -13,6 +13,7 @@ import {
   ModalBody,
   Spinner,
   Box,
+  Text
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Footer from "@/components/footer";
@@ -156,15 +157,21 @@ export default function Home() {
           backgroundColor: "black",
           width: "100%",
           border: "0px",
+          flexDirection:'column'
         }}
         alignItems="center"
         height={{ base: "300px", lg: "100vh" }}
       >
         <Img
-          style={{ maxWidth: "40%", width: "1000px" }}
-          src="/hero.png"
+        marginTop={{base : '20px'}}
+        maxWidth={{base : '60%', lg : '40%'}}
+          style={{ width: "1000px" }}
+          src="/hero1.png"
           alt="The cloud club logo"
         />
+        <div style={{borderBottom:'1px solid', borderBottomColor:'#cccccc'}}>
+          <Text color={'white'} fontSize={{base : 20, md:40, lg : 40}}>CANNABIS SOCIAL CLUB</Text>
+        </div>
       </Box>
       <Stack
         style={{

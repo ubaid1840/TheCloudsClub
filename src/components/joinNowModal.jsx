@@ -11,11 +11,13 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Input
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 function JoinNowModal({ isOpen, onClose }) {
+  const [email, setEmail] = useState('')
   return (
     <Modal
       isOpen={isOpen}
@@ -91,9 +93,34 @@ function JoinNowModal({ isOpen, onClose }) {
               >
                 Seien Sie der Erste, der von The CloudClub erfährt
               </Text>
-              <Link href="/join-signup">
+              <Input
+              style={{
+                height: "48px",
+                width: "100%",
+                fontWeight: "600",
+                backgroundColor: "black",
+                color: "white",
+                borderWidth: 1,
+                borderColor: "white",
+                borderRadius: "5px",
+              }}
+              variant={"solid"}
+              //   color={"black"}
+              _placeholder={{
+                color: "grey",
+              }}
+              borderRadius={0}
+              borderColor={"white.900"}
+              id={"email"}
+              type={"email"}
+              placeholder={"Email"}
+              aria-label={"Email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+              {/* <Link href="/join-signup"> */}
                 <Button
-                  onClick={() => {}}
+                  onClick={onClose}
                  
                   style={{
                     marginTop: "40px",
@@ -103,7 +130,7 @@ function JoinNowModal({ isOpen, onClose }) {
                 >
                   Join Now
                 </Button>
-              </Link>
+              {/* </Link> */}
             </div>
           </Box>
         </ModalBody>

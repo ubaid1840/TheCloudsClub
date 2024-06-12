@@ -10,7 +10,7 @@ import {
   useColorModeValue,
   SimpleGrid,
   useMediaQuery,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { RiInstagramFill } from "react-icons/ri";
@@ -40,7 +40,7 @@ export default function Footer() {
       >
         {isLargerThan500 ? (
           <Img
-            style={{ height: 160, width: 160,  }}
+            style={{ height: 160, width: 160 }}
             src="/logo2.png"
             alt="The cloud club logo"
           />
@@ -49,7 +49,9 @@ export default function Footer() {
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <Text className="footer-heading">Get in touch</Text>
           <Text className="footer-subheading">a: The CloudClub</Text>
-          <Text className="footer-subheading" wordBreak={'break-word'}>e: support@thecloudclub.cc</Text>
+          <Text className="footer-subheading" wordBreak={"break-word"}>
+            e: support@thecloudclub.cc
+          </Text>
         </VStack>
         <VStack style={{ alignItems: "flex-start" }} spacing={3}>
           <div className="footer-heading">Quick Links</div>
@@ -57,10 +59,16 @@ export default function Footer() {
             <div className="footer-subheading">Home</div>
           </Link>
           <Link href="/profile">
-          <div className="footer-subheading">Profile</div>
+            <div className="footer-subheading">Profile</div>
           </Link>
           <Link href="/merch">
-          <div className="footer-subheading">Merchandise</div>
+            <div className="footer-subheading">Merchandise</div>
+          </Link>
+          <Link href="/privacy-policy">
+            <button className="footer-subheading">Privacy Policy</button>
+          </Link>
+          <Link href="/pravension">
+            <button className="footer-subheading">Prävension</button>
           </Link>
         </VStack>
 
@@ -112,9 +120,7 @@ export default function Footer() {
                 onChange={(e) => setEmail(e.target.value)}
               />
 
-              <Button className="btn">
-                Subscribe
-              </Button>
+              <Button className="btn">Subscribe</Button>
             </div>
           </Stack>
         </VStack>
@@ -122,7 +128,7 @@ export default function Footer() {
 
       <div
         style={{
-          width:'100%',
+          width: "100%",
           borderWidth: "1px",
           borderColor: "white",
           maxWidth: "1300px",
